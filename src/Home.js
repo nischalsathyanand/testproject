@@ -8,13 +8,14 @@ import {
   List,
   Menu,
   Segment,
+  Step,
   StepTitle,
   StepGroup,
   StepDescription,
   StepContent,
-  Icon,
-  Step,
+  Icon
 } from "semantic-ui-react";
+
 const Home = () => (
   <div>
     <Menu fixed="top" inverted>
@@ -30,7 +31,7 @@ const Home = () => (
     <Container text style={{ marginTop: "7em" }}>
       <StepGroup>
         <Step>
-          <Icon name="truck" />
+          <Icon name='truck' />
           <StepContent>
             <StepTitle>Shipping</StepTitle>
             <StepDescription>Choose your shipping options</StepDescription>
@@ -38,7 +39,7 @@ const Home = () => (
         </Step>
 
         <Step active>
-          <Icon name="payment" />
+          <Icon name='payment' />
           <StepContent>
             <StepTitle>Billing</StepTitle>
             <StepDescription>Enter billing information</StepDescription>
@@ -46,7 +47,7 @@ const Home = () => (
         </Step>
 
         <Step disabled>
-          <Icon name="info" />
+          <Icon name='info' />
           <StepContent>
             <StepTitle>Confirm Order</StepTitle>
           </StepContent>
