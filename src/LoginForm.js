@@ -1,33 +1,28 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Image,
-  Message,
-  Segment,
-} from "semantic-ui-react";
+import React, { useState } from 'react'
+import { Navigate } from 'react-router-dom'
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 function LoginForm() {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false)
   const handleLogin = (event) => {
-    event.preventDefault();
-    const username = event.target[1].value;
-    const password = event.target[2].value;
-    if (username == "nischal" && password == "123") {
-      console.log("authenticated");
-      setAuthenticated(true);
+    event.preventDefault()
+    const username = event.target[1].value
+    const password = event.target[2].value
+    if (username == 'nischal' && password == '1234') {
+      console.log('authenticated')
+      setAuthenticated(true)
     } else {
-      console.log("error");
-      setAuthenticated(false);
+      console.log('error')
+      setAuthenticated(false)
     }
-  };
+  }
+  if (authenticated) {
+    return <Navigate to="/home" />
+  }
   return (
-    <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+    <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
         <Header as="h2" color="teal" textAlign="center">
-          <Image src="/logo.png" /> LOGIN PAGE
+          Login Page
         </Header>
         <Form size="large" onSubmit={handleLogin}>
           <Segment stacked>
@@ -66,12 +61,9 @@ function LoginForm() {
             </Button>
           </Segment>
         </Form>
-        <Message>
-          New to us? <a href="#">Sign Up</a>
-        </Message>
       </Grid.Column>
     </Grid>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm
