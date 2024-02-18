@@ -1,3 +1,4 @@
+import { inject } from 'mobx-react'
 import React, { useState } from 'react'
 
 import {
@@ -12,7 +13,29 @@ import {
   GridColumn,
   Grid,
 } from 'semantic-ui-react'
+import buyStore from './Store/BuyStore'
 const BuyModal = ({ open }) => {
+  const [newOrder, setNewOrder] = useState('')
+  const [cepe, setCepe] = useState('')
+  const [expiry, setExpiry] = useState('')
+  const [strike, setStrike] = useState('')
+  const handleAddOrder = () => {}
+  const handleCepe = (e) => {
+    setCepe(e.target.value)
+  }
+  const handleExpiry = (e) => {
+    setExpiry(e.target.value)
+  }
+  const handleStrike = (e) => {
+    setStrike(e.target.value)
+  }
+
+  const handleBuy = () => {
+    console.log(cepe + ' ' + expiry + ' ' + strike)
+
+    buyStore.orders.push({ cepe: cepe, expiry: expiry, strike: strike })
+    open = false
+  }
   return (
     <div>
       <Modal
@@ -26,20 +49,20 @@ const BuyModal = ({ open }) => {
             <GridRow>
               <GridColumn>
                 <Label>Ce/Pe </Label>
-                <Input disabled value="100" />
+                <Input onChange={handleCepe} />
               </GridColumn>
             </GridRow>
             <GridRow>
               <GridColumn>
                 <Label>Expiry </Label>
-                <Input disabled value="20/10/2024" />
+                <Input onChange={handleExpiry} />
               </GridColumn>
             </GridRow>
             <GridRow>
               <GridColumn>
                 {' '}
                 <Label>Strike </Label>
-                <Input disabled value="20" />
+                <Input onChange={handleStrike} />
               </GridColumn>
             </GridRow>
           </Grid>
@@ -48,7 +71,7 @@ const BuyModal = ({ open }) => {
           <Button negative onClick={() => dispatch({ type: 'close' })}>
             No
           </Button>
-          <Button positive onClick={() => dispatch({ type: 'close' })}>
+          <Button positive onClick={handleBuy}>
             Buy
           </Button>
         </ModalActions>
@@ -57,4 +80,4 @@ const BuyModal = ({ open }) => {
   )
 }
 
-export default BuyModal
+export default inject(buyStore)(BuyModal)
