@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   FormField,
   Button,
@@ -40,10 +40,14 @@ const countryOptions = [
 ]
 
 function Order() {
-  const [modalOpen, setModalOpen] = useState(false)
+  
+  const modelRef = useRef();
   const toggleModal = () => {
-    setModalOpen(true)
+    
+    modelRef.current.handleModal()
+    
   }
+
   return (
     <Form>
       <FormField>
@@ -73,7 +77,7 @@ function Order() {
       <Button type="submit" onClick={toggleModal}>
         Select
       </Button>
-      <BuyModal open={modalOpen} />
+      <BuyModal ref={modelRef} />
     </Form>
   )
 }

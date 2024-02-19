@@ -1,5 +1,5 @@
-import { inject } from 'mobx-react'
-import React, { useState } from 'react'
+import { inject, observer } from 'mobx-react'
+import React, { useImperativeHandle, useState,forwardRef } from 'react'
 
 import {
   ModalHeader,
@@ -14,12 +14,13 @@ import {
   Grid,
 } from 'semantic-ui-react'
 import buyStore from './Store/BuyStore'
-const BuyModal = ({ open }) => {
+const BuyModal = forwardRef((props, ref) => {
   const [newOrder, setNewOrder] = useState('')
+  const [modalOpen, setModalOpen] = useState(false)
   const [cepe, setCepe] = useState('')
   const [expiry, setExpiry] = useState('')
   const [strike, setStrike] = useState('')
-  const handleAddOrder = () => {}
+  
   const handleCepe = (e) => {
     setCepe(e.target.value)
   }
@@ -30,18 +31,28 @@ const BuyModal = ({ open }) => {
     setStrike(e.target.value)
   }
 
+  useImperativeHandle(ref,() => ({
+    handleModal() {
+
+      setModalOpen(true)
+    }
+
+  }))
+
+
   const handleBuy = () => {
     console.log(cepe + ' ' + expiry + ' ' + strike)
 
     buyStore.orders.push({ cepe: cepe, expiry: expiry, strike: strike })
-    open = false
+    setModalOpen(false)
+    console.log(buyStore.orders)
+
   }
   return (
     <div>
       <Modal
         size="small"
-        open={open}
-        onClose={() => dispatch({ type: 'close' })}
+        open={modalOpen}
       >
         <ModalHeader>Are you sure? You want to buy ?</ModalHeader>
         <ModalContent>
@@ -68,7 +79,7 @@ const BuyModal = ({ open }) => {
           </Grid>
         </ModalContent>
         <ModalActions>
-          <Button negative onClick={() => dispatch({ type: 'close' })}>
+          <Button negative onClick={() => setModalOpen(false)}>
             No
           </Button>
           <Button positive onClick={handleBuy}>
@@ -78,6 +89,6 @@ const BuyModal = ({ open }) => {
       </Modal>
     </div>
   )
-}
+});
 
-export default inject(buyStore)(BuyModal)
+export default inject('buyStore')(observer(BuyModal))

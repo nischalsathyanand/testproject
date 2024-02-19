@@ -6,9 +6,12 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import React from "react"
+import React from "react";
+import { Provider, inject, observer } from 'mobx-react';
+import buyStore from "./Store/BuyStore";
 function App() {
   return (
+    <Provider buyStore={buyStore}>
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />}></Route>
@@ -16,6 +19,7 @@ function App() {
         <Route path="/home" Component={Home}></Route>
       </Routes>
     </Router>
+    </Provider>
   );
 }
 
