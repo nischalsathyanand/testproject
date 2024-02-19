@@ -32,7 +32,7 @@ function Home() {
         <Container>
           <Menu.Item as="a" header>
             <Image size="mini" src="" style={{ marginRight: '1.5em' }} />
-            Stock Marketing
+            Stock Market App
           </Menu.Item>
           <Menu.Item as="a">Home</Menu.Item>
         </Container>
@@ -41,17 +41,17 @@ function Home() {
       <Container text style={{ marginTop: '7em' }}>
         <StepGroup>
           <Step active={activeStep === 0} onClick={() => handleStepClick(0)}>
-            <Icon name="money" />
+            <Icon name="add to cart" />
             <StepContent>
-              <StepTitle>ORDER</StepTitle>
+              <StepTitle>Order</StepTitle>
               <StepDescription>Choose your order</StepDescription>
             </StepContent>
           </Step>
 
           <Step active={activeStep === 1} onClick={() => handleStepClick(1)}>
-            <Icon name="payment" />
+            <Icon name="globe" />
             <StepContent>
-              <StepTitle>POSITION</StepTitle>
+              <StepTitle>Positions</StepTitle>
               <StepDescription>Update Your orders</StepDescription>
             </StepContent>
           </Step>

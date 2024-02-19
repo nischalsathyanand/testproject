@@ -80,4 +80,4 @@ const BuyModal = ({ open }) => {
   )
 }
 
-export default inject(buyStore)(BuyModal)
+export default BuyModal
