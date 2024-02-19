@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom'
+import { inject, observer } from 'mobx-react'
 import {
   TableRow,
   TableHeaderCell,
@@ -9,8 +9,11 @@ import {
   Table,
   Button,
 } from 'semantic-ui-react'
-function Position() {
-  const handleBack = () => {}
+
+function Position({ buyStore }) {
+  const handleBack = () => {
+    // handle back logic
+  }
 
   return (
     <Table>
@@ -28,24 +31,23 @@ function Position() {
       </TableHeader>
 
       <TableBody>
-        <TableRow verticalAlign="top">
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-          <TableCell>Data</TableCell>
-        </TableRow>
+        {buyStore.orders.map((order, index) => (
+          <TableRow key={index} verticalAlign="top">
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>test</TableCell>
+            <TableCell>{order.expiry}</TableCell>
+            <TableCell>test</TableCell>
+            <TableCell>test</TableCell>
+            <TableCell>test</TableCell>
+            <TableCell>{order.cepe}</TableCell>
+            <TableCell>{order.strike}</TableCell>
+          </TableRow>
+        ))}
       </TableBody>
-      <br />
 
-      <div>
-        <Button onClick={handleBack}> Back</Button>
-      </div>
+      <Button onClick={handleBack}>Back</Button>
     </Table>
   )
 }
 
-export default Position
+export default inject('buyStore')(observer(Position))

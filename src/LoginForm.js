@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react'
 function LoginForm() {
   const [authenticated, setAuthenticated] = useState(false)
-  const [loginFailed, setLoginFailed] = useState(false)
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
   const handleLogin = (event) => {
     event.preventDefault()
     const username = event.target[1].value
@@ -22,6 +22,7 @@ function LoginForm() {
     } else {
       console.log('error')
       setAuthenticated(false)
+      setShowErrorMessage(true)
     }
   }
   if (authenticated) {
@@ -69,11 +70,13 @@ function LoginForm() {
             <Button color="teal" fluid size="large" type="submit">
               Login
             </Button>
+            {showErrorMessage && (
+              <Message negative>
+                <MessageHeader>Invalid login</MessageHeader>
+                <p>We are sorry your credentials are incorrect</p>
+              </Message>
+            )}
           </Segment>
-          <Message negative hidden={!loginFailed}>
-            <MessageHeader>Failed to login</MessageHeader>
-            <p>Check you email or password</p>
-          </Message>
         </Form>
       </Grid.Column>
     </Grid>

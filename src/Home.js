@@ -49,7 +49,7 @@ function Home() {
           </Step>
 
           <Step active={activeStep === 1} onClick={() => handleStepClick(1)}>
-            <Icon name="globe" />
+            <Icon name="chart line" />
             <StepContent>
               <StepTitle>Positions</StepTitle>
               <StepDescription>Update Your orders</StepDescription>
@@ -58,7 +58,7 @@ function Home() {
         </StepGroup>
         {activeStep === 0 && (
           <Segment>
-            <Order />
+            <Order handleStepClick={handleStepClick} />
           </Segment>
         )}
         {activeStep === 1 && (
