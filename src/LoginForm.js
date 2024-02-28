@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment,  MessageHeader } from 'semantic-ui-react'
 function LoginForm() {
   const [authenticated, setAuthenticated] = useState(false)
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
   const handleLogin = (event) => {
     event.preventDefault()
     const username = event.target[1].value
@@ -13,11 +14,13 @@ function LoginForm() {
     } else {
       console.log('error')
       setAuthenticated(false)
+      setShowErrorMessage(true)
     }
   }
   if (authenticated) {
     return <Navigate to="/home" />
   }
+  
   return (
     <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
@@ -59,8 +62,18 @@ function LoginForm() {
             <Button color="teal" fluid size="large" type="submit">
               Login
             </Button>
+     
+
           </Segment>
         </Form>
+        {
+              showErrorMessage && (
+                <Message negative >
+                <MessageHeader>Invalid login</MessageHeader>
+                <p>We are sorry your credentials are incorrect</p>
+              </Message>
+              )
+            }
       </Grid.Column>
     </Grid>
   )

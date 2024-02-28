@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   FormField,
   Button,
@@ -8,6 +8,10 @@ import {
   label,
 } from 'semantic-ui-react'
 import BuyModal from './BuyModal'
+import BuyOrderPreview from './BuyOrderPreview'
+import { inject, observer } from 'mobx-react';
+import buyStore from './Store/BuyStore';
+
 const options = [
   { key: 'angular', text: 'Angular', value: 'angular' },
   { key: 'css', text: 'CSS', value: 'css' },
@@ -39,47 +43,100 @@ const countryOptions = [
   { key: 'ar', value: 'ar', text: '10' },
 ]
 
-function Order() {
-  
+function Order({ handleStepClick }) {
+
   const modelRef = useRef();
+
+
+  const [orderCount, setOrderCount] = useState(0);
+
+
+  const [formData, setformData] = useState({
+    instruments: "",
+    future_options: "",
+    lot: ""
+  })
+
   const toggleModal = () => {
-    
+
+
     modelRef.current.handleModal()
+
+
+
+  }
+
+
+
+  const toggleOrderCount = (count) => {
+    setOrderCount(count)
     
+    setformData({
+      instruments: "",
+      future_options: "",
+      lot: ""
+    });
+  }
+
+  const clearForm = () => {
+
+    setformData({
+      instruments: "",
+      future_options: "",
+      lot: ""
+    });
+
+    console.log(buyStore)
+
   }
 
   return (
-    <Form>
-      <FormField>
-        <label>Instrument</label>
-        <Dropdown
-          placeholder="Instruments"
-          fluid
-          multiple
-          selection
-          options={options}
-        />
-      </FormField>
-      <FormField>
-        <label>Future/Option</label>
-        <Dropdown
-          placeholder="Future/Option"
-          fluid
-          multiple
-          selection
-          options={future}
-        />
-      </FormField>
-      <FormField>
-        <label>Lots</label>
-        <Select placeholder="Select Lots" options={countryOptions} />
-      </FormField>
-      <Button type="submit" onClick={toggleModal}>
-        Select
-      </Button>
-      <BuyModal ref={modelRef} />
-    </Form>
+    <div>
+      <Form>
+        <FormField>
+          <label>Instrument</label>
+          <Dropdown
+            placeholder="Instruments"
+            fluid
+            selection
+            options={options}
+            value={formData.instruments}
+            onChange={(e, { value }) => setformData({ ...formData, instruments: value })}
+          />
+        </FormField>
+        <FormField>
+          <label>Future/Option</label>
+          <Dropdown
+            placeholder="Future/Option"
+            fluid
+            selection
+            options={future}
+            value={formData.future_options}
+            onChange={(e, { value }) => setformData({ ...formData, future_options: value })}
+          />
+        </FormField>
+
+        <FormField>
+          <label>Lots</label>
+          <Select placeholder="Select Lots" options={countryOptions} value={formData.lot} onChange={(e, { value }) => setformData({ ...formData, lot: value })} />
+   
+        </FormField>
+
+        <BuyModal ref={modelRef} formData={formData} handleStepClick={handleStepClick} toggleOrderCount={toggleOrderCount} />
+        <Button type="submit" onClick={toggleModal}>
+            Select
+          </Button>
+          <Button onClick={clearForm}>
+            Clear
+          </Button>
+          <Button floated='right' disabled={buyStore.orders.length <= 0} >
+            Buy
+          </Button>
+      </Form>
+
+      <BuyOrderPreview buyStore={buyStore} orderCount={orderCount} />
+    </div>
   )
 }
 
-export default Order
+export default inject('buyStore')(observer(Order));

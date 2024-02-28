@@ -33,8 +33,10 @@ const BuyModal = forwardRef((props, ref) => {
 
   useImperativeHandle(ref,() => ({
     handleModal() {
+      
 
       setModalOpen(true)
+    
     }
 
   }))
@@ -42,10 +44,12 @@ const BuyModal = forwardRef((props, ref) => {
 
   const handleBuy = () => {
     console.log(cepe + ' ' + expiry + ' ' + strike)
-
-    buyStore.orders.push({ cepe: cepe, expiry: expiry, strike: strike })
+ 
+    buyStore.orders.push({ ...props.formData, cepe: cepe, expiry: expiry, strike: strike })
+    //props.handleStepClick(1)
     setModalOpen(false)
     console.log(buyStore.orders)
+    props.toggleOrderCount(buyStore.orders.length)
 
   }
   return (
@@ -80,10 +84,10 @@ const BuyModal = forwardRef((props, ref) => {
         </ModalContent>
         <ModalActions>
           <Button negative onClick={() => setModalOpen(false)}>
-            No
+            Close
           </Button>
-          <Button positive onClick={handleBuy}>
-            Buy
+            <Button positive onClick={handleBuy}>
+            Submit
           </Button>
         </ModalActions>
       </Modal>

@@ -58,7 +58,7 @@ function Home() {
         </StepGroup>
         {activeStep === 0 && (
           <Segment>
-            <Order />
+            <Order handleStepClick={handleStepClick} />
           </Segment>
         )}
         {activeStep === 1 && (
