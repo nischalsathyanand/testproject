@@ -1,13 +1,14 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { TableRow, TableHeaderCell, TableHeader, TableCell, TableBody, Table, Button } from 'semantic-ui-react';
+import { TableRow, TableHeaderCell, TableHeader, TableCell, TableBody, Table, Button, Icon } from 'semantic-ui-react';
 
-function Position({ buyStore }) {
+function Position({ positionStore }) {
   const handleBack = () => {
     // handle back logic
   };
 
   return (
+    <div>
     <Table>
       <TableHeader>
         <TableRow>
@@ -23,12 +24,12 @@ function Position({ buyStore }) {
       </TableHeader>
 
       <TableBody>
-        {buyStore.orders.map((order, index) => (
+        {positionStore.buys.map((order, index) => (
           <TableRow key={index} verticalAlign="top">
             <TableCell>{index + 1}</TableCell>
             <TableCell>test</TableCell>
             <TableCell>{order.expiry}</TableCell>
-            <TableCell>test</TableCell>
+            <TableCell>{order.lot}</TableCell>
             <TableCell>test</TableCell>
             <TableCell>test</TableCell>
             <TableCell>{order.cepe}</TableCell>
@@ -37,9 +38,11 @@ function Position({ buyStore }) {
         ))}
       </TableBody>
 
-      <Button onClick={handleBack}>Back</Button>
+
     </Table>
+          <Button onClick={handleBack}> <Icon name="step backward" />Back</Button>
+          </div>
   );
 }
 
-export default inject('buyStore')(observer(Position));
+export default inject('positionStore')(observer(Position));

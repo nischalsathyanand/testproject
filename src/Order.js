@@ -6,11 +6,14 @@ import {
   Form,
   Select,
   label,
+  Icon,
+  Modal,
 } from 'semantic-ui-react'
 import BuyModal from './BuyModal'
 import BuyOrderPreview from './BuyOrderPreview'
-import { inject, observer } from 'mobx-react';
-import buyStore from './Store/BuyStore';
+import { inject, observer } from 'mobx-react'
+import buyStore from './Store/BuyStore'
+import positionStore from './Store/PositionStore'
 
 const options = [
   { key: 'angular', text: 'Angular', value: 'angular' },
@@ -44,50 +47,47 @@ const countryOptions = [
 ]
 
 function Order({ handleStepClick }) {
+  const modelRef = useRef()
 
-  const modelRef = useRef();
+  const [orderCount, setOrderCount] = useState(0)
 
-
-  const [orderCount, setOrderCount] = useState(0);
-
+  const [open, setOpen] = useState(false)
 
   const [formData, setformData] = useState({
-    instruments: "",
-    future_options: "",
-    lot: ""
+    instruments: '',
+    future_options: '',
+    lot: '',
   })
 
   const toggleModal = () => {
-
-
     modelRef.current.handleModal()
-
-
-
   }
 
-
+  const handleBuy = () => {
+    positionStore.buys.push(...buyStore.orders)
+    buyStore.clearOrders()
+    console.log(positionStore.buys)
+    handleStepClick(1)
+  }
 
   const toggleOrderCount = (count) => {
     setOrderCount(count)
-    
+
     setformData({
-      instruments: "",
-      future_options: "",
-      lot: ""
-    });
+      instruments: '',
+      future_options: '',
+      lot: '',
+    })
   }
 
   const clearForm = () => {
-
     setformData({
-      instruments: "",
-      future_options: "",
-      lot: ""
-    });
+      instruments: '',
+      future_options: '',
+      lot: '',
+    })
 
     console.log(buyStore)
-
   }
 
   return (
@@ -101,7 +101,9 @@ function Order({ handleStepClick }) {
             selection
             options={options}
             value={formData.instruments}
-            onChange={(e, { value }) => setformData({ ...formData, instruments: value })}
+            onChange={(e, { value }) =>
+              setformData({ ...formData, instruments: value })
+            }
           />
         </FormField>
         <FormField>
@@ -112,31 +114,68 @@ function Order({ handleStepClick }) {
             selection
             options={future}
             value={formData.future_options}
-            onChange={(e, { value }) => setformData({ ...formData, future_options: value })}
+            onChange={(e, { value }) =>
+              setformData({ ...formData, future_options: value })
+            }
           />
         </FormField>
 
         <FormField>
           <label>Lots</label>
-          <Select placeholder="Select Lots" options={countryOptions} value={formData.lot} onChange={(e, { value }) => setformData({ ...formData, lot: value })} />
-   
+          <Select
+            placeholder="Select Lots"
+            options={countryOptions}
+            value={formData.lot}
+            onChange={(e, { value }) =>
+              setformData({ ...formData, lot: value })
+            }
+          />
         </FormField>
 
-        <BuyModal ref={modelRef} formData={formData} handleStepClick={handleStepClick} toggleOrderCount={toggleOrderCount} />
-        <Button type="submit" onClick={toggleModal}>
-            Select
-          </Button>
-          <Button onClick={clearForm}>
-            Clear
-          </Button>
-          <Button floated='right' disabled={buyStore.orders.length <= 0} >
-            Buy
-          </Button>
+        <BuyModal
+          ref={modelRef}
+          formData={formData}
+          handleStepClick={handleStepClick}
+          toggleOrderCount={toggleOrderCount}
+        />
+        <Button type="submit" onClick={toggleModal} positive>
+          Select
+        </Button>
+        <Button onClick={clearForm}>Clear</Button>
+        <Modal
+          onClose={() => setOpen(false)}
+          onOpen={() => setOpen(true)}
+          size='tiny'
+          open={open}
+          trigger={
+            <Button
+              floated="right"
+              disabled={buyStore.orders.length <= 0}
+              color="linkedin"
+            >
+              <Icon name="shop" />
+              Buy
+            </Button>
+          }
+        >
+          <Modal.Header>Confirmation</Modal.Header>
+          <Modal.Content>
+            <p>Are you sure you want to proceed buying {buyStore.orders.length} item(s) ?</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color="red" onClick={() => setOpen(false)}>
+              No
+            </Button>
+            <Button color="green" onClick={handleBuy}>
+              Yes
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </Form>
 
-      <BuyOrderPreview buyStore={buyStore} orderCount={orderCount} />
+      <BuyOrderPreview orderCount={orderCount} />
     </div>
   )
 }
 
-export default inject('buyStore')(observer(Order));
+export default inject('buyStore', 'positionStore')(observer(Order))

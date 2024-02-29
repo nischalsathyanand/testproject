@@ -43,7 +43,7 @@ function Home() {
           <Step active={activeStep === 0} onClick={() => handleStepClick(0)}>
             <Icon name="money" />
             <StepContent>
-              <StepTitle>ORDER</StepTitle>
+              <StepTitle>Order</StepTitle>
               <StepDescription>Choose your order</StepDescription>
             </StepContent>
           </Step>
@@ -51,7 +51,7 @@ function Home() {
           <Step active={activeStep === 1} onClick={() => handleStepClick(1)}>
             <Icon name="payment" />
             <StepContent>
-              <StepTitle>POSITION</StepTitle>
+              <StepTitle>Position</StepTitle>
               <StepDescription>Update Your orders</StepDescription>
             </StepContent>
           </Step>

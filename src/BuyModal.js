@@ -12,6 +12,7 @@ import {
   GridRow,
   GridColumn,
   Grid,
+  Icon
 } from 'semantic-ui-react'
 import buyStore from './Store/BuyStore'
 const BuyModal = forwardRef((props, ref) => {
@@ -42,7 +43,7 @@ const BuyModal = forwardRef((props, ref) => {
   }))
 
 
-  const handleBuy = () => {
+  const handleLotProperties = () => {
     console.log(cepe + ' ' + expiry + ' ' + strike)
  
     buyStore.orders.push({ ...props.formData, cepe: cepe, expiry: expiry, strike: strike })
@@ -58,7 +59,7 @@ const BuyModal = forwardRef((props, ref) => {
         size="small"
         open={modalOpen}
       >
-        <ModalHeader>Are you sure? You want to buy ?</ModalHeader>
+        <ModalHeader>Choose Attributes</ModalHeader>
         <ModalContent>
           <Grid>
             <GridRow>
@@ -86,7 +87,8 @@ const BuyModal = forwardRef((props, ref) => {
           <Button negative onClick={() => setModalOpen(false)}>
             Close
           </Button>
-            <Button positive onClick={handleBuy}>
+            <Button positive onClick={handleLotProperties}>
+              <Icon name = 'thumbs up'/>
             Submit
           </Button>
         </ModalActions>
